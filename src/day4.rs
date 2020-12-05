@@ -1,5 +1,5 @@
+use crate::regex;
 use aoc_runner_derive::{aoc, aoc_generator};
-use regex::Regex;
 
 #[derive(Debug, PartialEq)]
 struct Height {
@@ -9,7 +9,7 @@ struct Height {
 
 impl Height {
     fn parse(hgt_str: &str) -> Option<Height> {
-        let re = Regex::new("(\\d+)(in|cm)").expect("Unable to create Regex");
+        let re = regex!("(\\d+)(in|cm)");
         match re.captures(hgt_str) {
             None => None,
             Some(captures) => {
@@ -104,7 +104,7 @@ impl Passport {
         }
     }
     fn valid_hcl(&self) -> bool {
-        let re = Regex::new("^#[0-9a-f]{6}$").expect("Failed to make regex");
+        let re = regex!("^#[0-9a-f]{6}$");
         match &self.hcl {
             None => false,
             Some(hair) => re.is_match(hair.as_str()),
@@ -118,7 +118,7 @@ impl Passport {
         }
     }
     fn valid_pid(&self) -> bool {
-        let re = Regex::new("^[0-9]{9}$").expect("Failed to build Regex");
+        let re = regex!("^[0-9]{9}$");
         match &self.pid {
             None => false,
             Some(pid) => re.is_match(pid.as_str()),
