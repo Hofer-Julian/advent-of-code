@@ -9,7 +9,7 @@ struct Height {
 
 impl Height {
     fn parse(hgt_str: &str) -> Option<Height> {
-        let re = regex!("(\\d+)(in|cm)");
+        let re = regex!(r"(\d+)(in|cm)");
         match re.captures(hgt_str) {
             None => None,
             Some(captures) => {
