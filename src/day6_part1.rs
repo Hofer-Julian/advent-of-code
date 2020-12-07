@@ -8,14 +8,13 @@ fn parse_input_day6_part1(input: &str) -> Vec<HashSet<char>> {
         .map(|group_str| parse_group_part1(group_str))
         .collect()
 }
+fn parse_group_part1(group_str: &str) -> HashSet<char> {
+    group_str.chars().filter(|c| *c != '\n').collect()
+}
 
 #[aoc(day6, part1)]
 fn number_of_inclusive_yes(input: &Vec<HashSet<char>>) -> usize {
     input.iter().fold(0, |acc, set| acc + set.len())
-}
-
-fn parse_group_part1(group_str: &str) -> HashSet<char> {
-    group_str.chars().filter(|c| *c != '\n').collect()
 }
 
 #[test]
