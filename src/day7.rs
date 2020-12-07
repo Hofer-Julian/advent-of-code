@@ -63,8 +63,26 @@ fn can_contain_shiny_gold(
     return 0;
 }
 
+#[aoc(day7, part2)]
+fn how_many_bags_must_shiny_gold_contain(input: &HashMap<String, HashMap<String, i32>>) -> i32 {
+    number_of_contained_bags(input, input.get("shiny gold"))
+}
+
+fn number_of_contained_bags(
+    input: &HashMap<String, HashMap<String, i32>>,
+    contained_bags: Option<&HashMap<String, i32>>,
+) -> i32 {
+    if let Some(contained_bags) = contained_bags {
+        contained_bags.iter().fold(0, |acc, (bag, number_of_bags)| {
+            acc + number_of_bags * (1 + number_of_contained_bags(input, input.get(bag)))
+        })
+    } else {
+        0
+    }
+}
+
 #[test]
-fn test_1() {
+fn test_part_1() {
     let input = "\
 light red bags contain 1 bright white bag, 2 muted yellow bags.
 dark orange bags contain 3 bright white bags, 4 muted yellow bags.
@@ -83,4 +101,20 @@ dotted black bags contain no other bags.";
     assert!(hashmap["light red"].contains_key("muted yellow"));
 
     assert_eq!(4, how_many_bags_can_contain_shiny_gold(&hashmap));
+}
+
+#[test]
+fn test_part_2() {
+    let input = "\
+shiny gold bags contain 2 dark red bags.
+dark red bags contain 2 dark orange bags.
+dark orange bags contain 2 dark yellow bags.
+dark yellow bags contain 2 dark green bags.
+dark green bags contain 2 dark blue bags.
+dark blue bags contain 2 dark violet bags.
+dark violet bags contain no other bags.";
+
+    let hashmap = parse_input_day7(input);
+
+    assert_eq!(126, how_many_bags_must_shiny_gold_contain(&hashmap));
 }
