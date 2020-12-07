@@ -39,13 +39,13 @@ fn how_many_bags_can_contain_shiny_gold(input: &HashMap<String, HashMap<String, 
     let mut amount_bags = 0;
 
     for contained_bags in input.values() {
-        amount_bags += contains_shiny_gold(input, Some(contained_bags));
+        amount_bags += can_contain_shiny_gold(input, Some(contained_bags));
     }
 
     amount_bags
 }
 
-fn contains_shiny_gold(
+fn can_contain_shiny_gold(
     input: &HashMap<String, HashMap<String, i32>>,
     contained_bags: Option<&HashMap<String, i32>>,
 ) -> i32 {
@@ -54,7 +54,7 @@ fn contains_shiny_gold(
             if bag == "shiny gold" {
                 return 1;
             }
-            let contains = contains_shiny_gold(input, input.get(bag));
+            let contains = can_contain_shiny_gold(input, input.get(bag));
             if contains == 1 {
                 return 1;
             }
