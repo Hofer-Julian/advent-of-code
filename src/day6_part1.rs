@@ -18,7 +18,7 @@ fn number_of_inclusive_yes(input: &Vec<HashSet<char>>) -> usize {
 }
 
 #[test]
-fn test_1() {
+fn test_number_of_inclusive_yes() {
     let input = "\
 abc
 
@@ -36,10 +36,7 @@ a
 
 b";
 
-    let groups: Vec<HashSet<char>> = input
-        .split("\n\n")
-        .map(|group_str| parse_group_part1(group_str))
-        .collect();
+    let groups = parse_input_day6_part1(input);
 
     assert_eq!(groups[0].len(), 3);
     assert_eq!(groups[1].len(), 3);

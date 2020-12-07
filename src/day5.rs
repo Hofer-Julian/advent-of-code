@@ -100,7 +100,7 @@ fn calc_position(partitions: &Vec<Partition>) -> (usize, usize) {
 }
 
 #[test]
-fn test_1() {
+fn test_calc_position() {
     let partitions = vec![
         Partition::Front,
         Partition::Back,

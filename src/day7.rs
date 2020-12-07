@@ -36,13 +36,9 @@ fn convert_line_to_hashmap_entry(line: &str) -> (String, HashMap<String, i32>) {
 
 #[aoc(day7, part1)]
 fn how_many_bags_can_contain_shiny_gold(input: &HashMap<String, HashMap<String, i32>>) -> i32 {
-    let mut amount_bags = 0;
-
-    for contained_bags in input.values() {
-        amount_bags += can_contain_shiny_gold(input, Some(contained_bags));
-    }
-
-    amount_bags
+    input.values().fold(0, |acc, contained_bags| {
+        acc + can_contain_shiny_gold(input, Some(contained_bags))
+    })
 }
 
 fn can_contain_shiny_gold(
@@ -82,7 +78,7 @@ fn number_of_contained_bags(
 }
 
 #[test]
-fn test_part_1() {
+fn test_part_1_contains_bag_shiny_gold() {
     let input = "\
 light red bags contain 1 bright white bag, 2 muted yellow bags.
 dark orange bags contain 3 bright white bags, 4 muted yellow bags.
@@ -104,7 +100,7 @@ dotted black bags contain no other bags.";
 }
 
 #[test]
-fn test_part_2() {
+fn test_part_2_count_contained_bags() {
     let input = "\
 shiny gold bags contain 2 dark red bags.
 dark red bags contain 2 dark orange bags.
