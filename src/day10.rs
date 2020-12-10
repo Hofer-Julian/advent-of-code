@@ -102,6 +102,25 @@ fn get_number_of_arrangments(input: &[usize]) -> usize {
     number_of_arrangments
 }
 
+// fn get_number_of_arrangments(input: &[usize]) -> usize {
+//     let mut number_of_arrangments = 1;
+//     let length = input.len();
+//     for index in 1..length {
+//         let mut possibilites = 0;
+//         for difference in 1..=3 {
+//             let limit = std::cmp::min(difference, input.len() - 1 - index);
+//             for index_difference in 1..=limit {
+//                 if input[index] + difference == input[index + index_difference] {
+//                     possibilites += 1;
+//                 }
+//             }
+//         }
+//         number_of_arrangments *= possibilites;
+//         dbg!(number_of_arrangments);
+//     }
+
+//     number_of_arrangments
+// }
 #[test]
 fn test_part_2_get_total_number_of_arrangments() {
     let input = "\
