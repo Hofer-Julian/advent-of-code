@@ -1,5 +1,3 @@
-use std::ops::Div;
-
 use aoc_runner_derive::{aoc, aoc_generator};
 
 #[aoc_generator(day10)]
@@ -94,8 +92,11 @@ fn get_number_of_arrangments(input: &[usize]) -> usize {
         return 1;
     }
     for difference in 1..=3 {
-        if input[0] + difference == input[1] {
-            number_of_arrangments += get_number_of_arrangments(&input[1..])
+        let limit = std::cmp::min(difference, input.len() - 1);
+        for index in 1..=limit {
+            if input[0] + difference == input[index] {
+                number_of_arrangments += get_number_of_arrangments(&input[index..])
+            }
         }
     }
     number_of_arrangments
