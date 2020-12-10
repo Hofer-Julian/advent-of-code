@@ -9,7 +9,7 @@ fn parse_input_day1(input: &str) -> Vec<usize> {
 }
 
 #[aoc(day1, part1)]
-fn find_2020_entries(input: &Vec<usize>) -> usize {
+fn find_2020_entries(input: &[usize]) -> usize {
     let pair = input.iter().enumerate().find_map(|(idx, &item)| {
         match input
             .iter()
@@ -24,7 +24,7 @@ fn find_2020_entries(input: &Vec<usize>) -> usize {
 }
 
 #[aoc(day1, part2)]
-fn find_2020_entries_with_three(input: &Vec<usize>) -> usize {
+fn find_2020_entries_with_three(input: &[usize]) -> usize {
     let result = input.iter().enumerate().find_map(|(idx, &item)| {
         input.iter().enumerate().find_map(|(idx2, &second)| {
             match input.iter().enumerate().find(|(idx3, &third)| {

@@ -10,8 +10,8 @@ fn parse_input_day10(input: &str) -> Vec<usize> {
 }
 
 #[aoc(day10, part1)]
-fn get_differences_multiplied(input: &Vec<usize>) -> usize {
-    let mut sorted_input = input.clone();
+fn get_differences_multiplied(input: &[usize]) -> usize {
+    let mut sorted_input = input.clone().to_vec();
     sorted_input.push(0);
     sorted_input.sort();
 
@@ -78,6 +78,6 @@ fn test_part_1_get_differences_multiplied() {
 }
 
 #[aoc(day10, part2)]
-fn total_number_of_arrangments(input: &Vec<usize>) -> usize {
+fn total_number_of_arrangments(input: &[usize]) -> usize {
     unimplemented!();
 }

@@ -26,7 +26,7 @@ fn parse_line(line: &str) -> PasswordChallenge {
 }
 
 #[aoc(day2, part1)]
-fn valid_password_count(input: &Vec<PasswordChallenge>) -> usize {
+fn valid_password_count(input: &[PasswordChallenge]) -> usize {
     input
         .iter()
         .filter(|challenge| is_valid_password_by_char_count(challenge))
@@ -44,7 +44,7 @@ fn is_valid_password_by_char_count(challenge: &PasswordChallenge) -> bool {
 }
 
 #[aoc(day2, part2)]
-fn valid_password_positions(input: &Vec<PasswordChallenge>) -> usize {
+fn valid_password_positions(input: &[PasswordChallenge]) -> usize {
     input
         .iter()
         .filter(|challenge| is_valid_password_by_pos(challenge))

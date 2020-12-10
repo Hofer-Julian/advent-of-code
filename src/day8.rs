@@ -41,7 +41,7 @@ fn parse_line(line: &str) -> Instruction {
 }
 
 #[aoc(day8, part1)]
-fn acc_of_unique_executions(input: &Vec<Instruction>) -> i32 {
+fn acc_of_unique_executions(input: &[Instruction]) -> i32 {
     let mut index: i32 = 0;
     let mut acc = 0;
     let mut visited_indices = Vec::new();
@@ -82,7 +82,7 @@ acc +6";
 }
 
 #[aoc(day8, part2)]
-fn acc_of_fixed_executions(input: &Vec<Instruction>) -> i32 {
+fn acc_of_fixed_executions(input: &[Instruction]) -> i32 {
     let instruction_length = input.len() as i32;
     for (fix_index, instruction) in input.iter().enumerate() {
         let fixed_operation = match instruction.operation {
@@ -90,7 +90,7 @@ fn acc_of_fixed_executions(input: &Vec<Instruction>) -> i32 {
             Operation::Jmp => Operation::Nop,
             Operation::Nop => Operation::Jmp,
         };
-        let mut input = input.clone();
+        let mut input = input.clone().to_vec();
         input[fix_index] = Instruction::new(fixed_operation, instruction.argument);
 
         let mut index: i32 = 0;

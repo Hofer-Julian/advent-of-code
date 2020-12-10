@@ -10,11 +10,11 @@ fn parse_input_day9(input: &str) -> Vec<usize> {
 }
 
 #[aoc(day9, part1)]
-fn first_number_no_sum_specific(input: &Vec<usize>) -> usize {
+fn first_number_no_sum_specific(input: &[usize]) -> usize {
     first_number_no_sum_general(input, 25)
 }
 
-fn first_number_no_sum_general(input: &Vec<usize>, number: usize) -> usize {
+fn first_number_no_sum_general(input: &[usize], number: usize) -> usize {
     let total_size = input.len();
     'outer: for index_number in number..total_size {
         for index_first in (index_number - number)..index_number {
@@ -72,7 +72,7 @@ fn contiguous_set_general(input: &[usize], number: usize) -> usize {
         for index_upper in index_lower..total_size {
             sum += input[index_upper];
             if sum == number {
-                let range: Vec<usize> = input[index_lower..=index_upper].into();
+                let range = input[index_lower..=index_upper].to_vec();
                 return range.iter().min().unwrap() + range.iter().max().unwrap();
             }
         }

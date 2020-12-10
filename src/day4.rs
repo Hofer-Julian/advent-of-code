@@ -161,12 +161,12 @@ fn parse_passport(passport_str: &str) -> Passport {
 }
 
 #[aoc(day4, part1)]
-fn count_valid_passports(input: &Vec<Passport>) -> usize {
+fn count_valid_passports(input: &[Passport]) -> usize {
     input.iter().filter(|pass| pass.has_fields()).count()
 }
 
 #[aoc(day4, part2)]
-fn count_valid_data_passports(input: &Vec<Passport>) -> usize {
+fn count_valid_data_passports(input: &[Passport]) -> usize {
     input.iter().filter(|pass| pass.is_valid()).count()
 }
 
