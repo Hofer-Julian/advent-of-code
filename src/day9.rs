@@ -61,11 +61,11 @@ fn test_part_1_first_number_without_property() {
 }
 
 #[aoc(day9, part2)]
-fn contiguous_set_specific(input: &Vec<usize>) -> usize {
+fn contiguous_set_specific(input: &[usize]) -> usize {
     contiguous_set_general(input, 36845998)
 }
 
-fn contiguous_set_general(input: &Vec<usize>, number: usize) -> usize {
+fn contiguous_set_general(input: &[usize], number: usize) -> usize {
     let total_size = input.len();
     for index_lower in 0..total_size {
         let mut sum = 0;
