@@ -98,7 +98,7 @@ fn calc_position(partitions: &Vec<Partition>) -> (usize, usize) {
     }
     (row.get_value(), column.get_value())
 }
-
+#[cfg(test)]
 #[test]
 fn test_calc_position() {
     let partitions = vec![

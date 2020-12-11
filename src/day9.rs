@@ -31,7 +31,7 @@ fn first_number_no_sum_general(input: &[usize], number: usize) -> usize {
         number
     )
 }
-
+#[cfg(test)]
 #[test]
 fn test_part_1_first_number_without_property() {
     let input = "\
@@ -82,7 +82,7 @@ fn contiguous_set_general(input: &[usize], number: usize) -> usize {
         number
     )
 }
-
+#[cfg(test)]
 #[test]
 fn test_part_2_contiguous_set() {
     let input = "\

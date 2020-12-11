@@ -21,7 +21,7 @@ fn parse_group_part2(group_str: &str) -> HashSet<char> {
 fn number_of_exclusive_yes(input: &Vec<HashSet<char>>) -> usize {
     input.iter().fold(0, |acc, set| acc + set.len())
 }
-
+#[cfg(test)]
 #[test]
 fn test_number_of_exclusive_yes() {
     let input = "\

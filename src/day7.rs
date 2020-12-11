@@ -76,7 +76,7 @@ fn number_of_contained_bags(
         0
     }
 }
-
+#[cfg(test)]
 #[test]
 fn test_part_1_contains_bag_shiny_gold() {
     let input = "\
@@ -98,7 +98,7 @@ dotted black bags contain no other bags.";
 
     assert_eq!(4, how_many_bags_can_contain_shiny_gold(&hashmap));
 }
-
+#[cfg(test)]
 #[test]
 fn test_part_2_count_contained_bags() {
     let input = "\

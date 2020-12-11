@@ -16,7 +16,7 @@ fn parse_group_part1(group_str: &str) -> HashSet<char> {
 fn number_of_inclusive_yes(input: &Vec<HashSet<char>>) -> usize {
     input.iter().fold(0, |acc, set| acc + set.len())
 }
-
+#[cfg(test)]
 #[test]
 fn test_number_of_inclusive_yes() {
     let input = "\

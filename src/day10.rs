@@ -37,9 +37,28 @@ fn get_differences_multiplied(input: &[usize]) -> usize {
     diff_three += 1;
     diff_one * diff_three
 }
-
+#[cfg(test)]
 #[test]
-fn test_part_1_get_differences_multiplied() {
+fn test_part_1_example_1_get_differences_multiplied() {
+    let input = "\
+16
+10
+15
+5
+1
+11
+7
+19
+6
+12
+4";
+
+    let instructions = parse_input_day10(input);
+    assert_eq!(35, get_differences_multiplied(&instructions));
+}
+#[cfg(test)]
+#[test]
+fn test_part_1_example_2_get_differences_multiplied() {
     let input = "\
 28
 33
@@ -121,8 +140,29 @@ fn get_number_of_arrangments(input: &[usize]) -> usize {
 
 //     number_of_arrangments
 // }
+
+#[cfg(test)]
 #[test]
-fn test_part_2_get_total_number_of_arrangments() {
+fn test_part_2_example_1_get_total_number_of_arrangments() {
+    let input = "\
+16
+10
+15
+5
+1
+11
+7
+19
+6
+12
+4";
+
+    let instructions = parse_input_day10(input);
+    assert_eq!(8, get_total_number_of_arrangments(&instructions));
+}
+#[cfg(test)]
+#[test]
+fn test_part_2_example_2_get_total_number_of_arrangments() {
     let input = "\
 28
 33

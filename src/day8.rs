@@ -64,6 +64,7 @@ fn acc_of_unique_executions(input: &[Instruction]) -> i32 {
     }
     acc
 }
+#[cfg(test)]
 #[test]
 fn test_part_1_acc_of_unique_executions() {
     let input = "\
@@ -119,7 +120,7 @@ fn acc_of_fixed_executions(input: &[Instruction]) -> i32 {
 
     panic!("Could not fix the program.")
 }
-
+#[cfg(test)]
 #[test]
 fn test_part_1_acc_of_fixed_executions() {
     let input = "\
