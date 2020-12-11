@@ -1,5 +1,5 @@
 use core::panic;
-use std::todo;
+use std::collections::HashMap;
 
 use aoc_runner_derive::{aoc, aoc_generator};
 
@@ -102,51 +102,25 @@ fn test_part_1_example_2_get_differences_multiplied() {
 #[aoc(day10, part2)]
 fn get_total_number_of_arrangments(input: &[usize]) -> usize {
     let mut sorted_input = input.clone().to_vec();
-    sorted_input.push(0);
     sorted_input.sort();
 
-    get_number_of_arrangments(&sorted_input)
-}
+    let mut sol = HashMap::new();
+    sol.insert(0, 1);
 
-// fn get_number_of_arrangments(input: &[usize]) -> usize {
-//     let mut number_of_arrangments = 0;
-//     if input.len() == 1 {
-//         return 1;
-//     }
-//     for difference in 1..=3 {
-//         let limit = std::cmp::min(difference, input.len() - 1);
-//         for index in 1..=limit {
-//             if input[0] + difference == input[index] {
-//                 number_of_arrangments += get_number_of_arrangments(&input[index..])
-//             }
-//         }
-//     }
-//     number_of_arrangments
-// }
-
-fn get_number_of_arrangments(input: &[usize]) -> usize {
-    dbg!(input);
-    let mut difference_vec = Vec::new();
-    let length = input.len();
-
-    for index in 1..length {
+    for line in &sorted_input {
+        sol.insert(*line, 0);
         for difference in 1..=3 {
-            if input[index - 1] + difference == input[index] {
-                difference_vec.push(difference);
-                continue;
+            if line >= &difference {
+                let reference = line - difference;
+                if sol.contains_key(&reference) {
+                    let value = sol.get(&line).unwrap() + sol.get(&reference).unwrap();
+                    sol.insert(*line, value);
+                }
             }
         }
     }
-    dbg!(difference_vec);
 
-    let length = difference_vec.len();
-    let mut number_of_possibilites = 1;
-    for index in 1..length {
-        if input[index - 1] + input[index] <= 3 {
-            number_of_possibilites
-        }
-    }
-    number_of_possibilites
+    *sol.get(sorted_input.last().unwrap()).unwrap()
 }
 
 #[cfg(test)]
@@ -168,42 +142,42 @@ fn test_part_2_example_1_get_total_number_of_arrangments() {
     let instructions = parse_input_day10(input);
     assert_eq!(8, get_total_number_of_arrangments(&instructions));
 }
-// #[cfg(test)]
-// #[test]
-// fn test_part_2_example_2_get_total_number_of_arrangments() {
-//     let input = "\
-// 28
-// 33
-// 18
-// 42
-// 31
-// 14
-// 46
-// 20
-// 48
-// 47
-// 24
-// 23
-// 49
-// 45
-// 19
-// 38
-// 39
-// 11
-// 1
-// 32
-// 25
-// 35
-// 8
-// 17
-// 7
-// 9
-// 4
-// 2
-// 34
-// 10
-// 3";
+#[cfg(test)]
+#[test]
+fn test_part_2_example_2_get_total_number_of_arrangments() {
+    let input = "\
+28
+33
+18
+42
+31
+14
+46
+20
+48
+47
+24
+23
+49
+45
+19
+38
+39
+11
+1
+32
+25
+35
+8
+17
+7
+9
+4
+2
+34
+10
+3";
 
-//     let instructions = parse_input_day10(input);
-//     assert_eq!(19208, get_total_number_of_arrangments(&instructions));
-// }
+    let instructions = parse_input_day10(input);
+    assert_eq!(19208, get_total_number_of_arrangments(&instructions));
+}
