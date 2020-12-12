@@ -7,16 +7,17 @@ fn parse_input_day11(input: &str) -> Vec<Vec<char>> {
 
 #[aoc(day11, part1)]
 fn day11_part1(input: &Vec<Vec<char>>) -> usize {
-    final_number_occupied_seats(input, &number_adjacent_occupied_seats)
+    final_number_occupied_seats(input, &number_adjacent_occupied_seats, 4)
 }
 
 fn final_number_occupied_seats(
     input: &Vec<Vec<char>>,
     function: &dyn Fn(&Vec<Vec<char>>, usize, usize) -> i32,
+    acceptable_seats: i32,
 ) -> usize {
     let mut old_state = input.clone();
     loop {
-        let state = state_change(&old_state, function);
+        let state = state_change(&old_state, function, acceptable_seats);
         if state == old_state {
             break;
         }
@@ -31,19 +32,20 @@ fn final_number_occupied_seats(
 
 fn state_change(
     input: &Vec<Vec<char>>,
-    function: &dyn Fn(&Vec<Vec<char>>, usize, usize) -> i32,
+    adjacent_seats_function: &dyn Fn(&Vec<Vec<char>>, usize, usize) -> i32,
+    acceptable_seats: i32,
 ) -> Vec<Vec<char>> {
     let mut new_state = input.clone();
     for (column_pos, row) in input.iter().enumerate() {
         for (row_pos, element) in row.iter().enumerate() {
             match element {
                 'L' => {
-                    if function(input, row_pos, column_pos) == 0 {
+                    if adjacent_seats_function(input, row_pos, column_pos) == 0 {
                         new_state[column_pos][row_pos] = '#';
                     }
                 }
                 '#' => {
-                    if function(input, row_pos, column_pos) >= 4 {
+                    if adjacent_seats_function(input, row_pos, column_pos) >= acceptable_seats {
                         new_state[column_pos][row_pos] = 'L';
                     }
                 }
@@ -108,7 +110,7 @@ L.L.L..L..
     let state_2 = parse_input_day11(state_2_str);
     assert_eq!(
         state_2,
-        state_change(&instructions, &number_adjacent_occupied_seats)
+        state_change(&instructions, &number_adjacent_occupied_seats, 4)
     );
 
     let state_3_str = "\
@@ -125,7 +127,7 @@ L.#.#..#..
     let state_3 = parse_input_day11(state_3_str);
     assert_eq!(
         state_3,
-        state_change(&state_2, &number_adjacent_occupied_seats)
+        state_change(&state_2, &number_adjacent_occupied_seats, 4)
     );
 }
 
