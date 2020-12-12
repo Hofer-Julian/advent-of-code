@@ -48,8 +48,14 @@ fn parse_line(line: &str) -> Instruction {
 }
 
 #[aoc(day12, part1)]
-fn manhattan_distance(input: &[Instruction]) -> i32 {
-    let position = get_position(input);
+fn manhattan_distance_part_1(input: &[Instruction]) -> i32 {
+    let position = get_position_part_1(input);
+    position.manhattan_distance()
+}
+
+#[aoc(day12, part2)]
+fn manhattan_distance_part_2(input: &[Instruction]) -> i32 {
+    let position = get_position_part_2(input);
     position.manhattan_distance()
 }
 
@@ -63,14 +69,10 @@ impl Coordinates {
     fn new(x: i32, y: i32) -> Self {
         Self { x, y }
     }
-    fn set(&mut self, x: i32, y: i32) {
-        self.x = x;
-        self.y = y;
-    }
     fn manhattan_distance(&self) -> i32 {
         self.x.abs() + self.y.abs()
     }
-    fn change_direction(&mut self, instruction: &Instruction) {
+    fn rotate(&mut self, instruction: &Instruction) {
         let number_right_rotations = match instruction.operation {
             Operation::Right => instruction.argument / 90,
             Operation::Left => (360 - instruction.argument) / 90,
@@ -81,13 +83,7 @@ impl Coordinates {
         }
     }
     fn rotate_right(&mut self) {
-        match self {
-            Coordinates { x: 0, y: -1 } => self.set(-1, 0),
-            Coordinates { x: -1, y: 0 } => self.set(0, 1),
-            Coordinates { x: 0, y: 1 } => self.set(1, 0),
-            Coordinates { x: 1, y: 0 } => self.set(0, -1),
-            _ => panic!("Invalid coordinates {:?}", self),
-        }
+        *self = Coordinates::new(self.y, -self.x);
     }
 }
 impl std::ops::Add<Coordinates> for Coordinates {
@@ -120,18 +116,35 @@ impl std::ops::AddAssign for Coordinates {
     }
 }
 
-fn get_position(input: &[Instruction]) -> Coordinates {
+fn get_position_part_1(input: &[Instruction]) -> Coordinates {
     let mut position = Coordinates::new(0, 0);
-    let mut direction = Coordinates::new(-1, 0);
+    let mut direction = Coordinates::new(1, 0);
     for instruction in input {
         match instruction.operation {
-            Operation::North => position.y += 1,
-            Operation::South => position.y -= 1,
-            Operation::East => position.x += 1,
-            Operation::West => position.x -= 1,
+            Operation::North => position.y += instruction.argument,
+            Operation::South => position.y -= instruction.argument,
+            Operation::East => position.x += instruction.argument,
+            Operation::West => position.x -= instruction.argument,
             Operation::Forward => position += direction * instruction.argument,
             // right or left
-            _ => direction.change_direction(instruction),
+            _ => direction.rotate(instruction),
+        }
+    }
+    position
+}
+
+fn get_position_part_2(input: &[Instruction]) -> Coordinates {
+    let mut position = Coordinates::new(0, 0);
+    let mut waypoint = Coordinates::new(10, 1);
+    for instruction in input {
+        match instruction.operation {
+            Operation::North => waypoint.y += instruction.argument,
+            Operation::South => waypoint.y -= instruction.argument,
+            Operation::East => waypoint.x += instruction.argument,
+            Operation::West => waypoint.x -= instruction.argument,
+            Operation::Forward => position += waypoint * instruction.argument,
+            // right or left
+            _ => waypoint.rotate(instruction),
         }
     }
     position
@@ -139,7 +152,7 @@ fn get_position(input: &[Instruction]) -> Coordinates {
 
 #[cfg(test)]
 #[test]
-fn test_part_1_acc_of_fixed_executions() {
+fn test_get_position_part_1() {
     let input = "\
 F10
 N3
@@ -148,6 +161,21 @@ R90
 F11";
 
     let instructions = parse_input_day12(input);
-    let expected = Coordinates::new(17, 8);
-    assert_eq!(expected, get_position(&instructions));
+    let expected = Coordinates::new(17, -8);
+    assert_eq!(expected, get_position_part_1(&instructions));
+}
+
+#[cfg(test)]
+#[test]
+fn test_get_position_part_2() {
+    let input = "\
+F10
+N3
+F7
+R90
+F11";
+
+    let instructions = parse_input_day12(input);
+    let expected = Coordinates::new(214, -72);
+    assert_eq!(expected, get_position_part_2(&instructions));
 }
