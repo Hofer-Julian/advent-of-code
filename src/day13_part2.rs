@@ -1,7 +1,7 @@
 use aoc_runner_derive::{aoc, aoc_generator};
 
 #[aoc_generator(day13, part2)]
-fn parse_input_day13_part2(input: &str) -> Vec<Option<i32>> {
+fn parse_input_day13_part2(input: &str) -> Vec<Option<usize>> {
     input
         .lines()
         .skip(1)
@@ -10,23 +10,20 @@ fn parse_input_day13_part2(input: &str) -> Vec<Option<i32>> {
         .collect()
 }
 
+/// This algorithms assumes a vector of coprimes
+/// which happens to be the case
 #[aoc(day13, part2)]
-fn get_answer_day13_part2(input: &Vec<Option<i32>>) -> i32 {
-    let first_id = input[0].unwrap();
+fn get_answer_day13_part2(input: &Vec<Option<usize>>) -> usize {
     let mut final_id = 0;
-
-    'outer: loop {
-        final_id += first_id;
-        for (index, id) in input.iter().skip(1).enumerate() {
-            if let Some(id) = id {
-                if (final_id + index as i32 + 1) % id != 0 {
-                    continue 'outer;
-                }
+    let mut prod = 1;
+    for (index, id) in input.iter().enumerate() {
+        if let Some(id) = id {
+            while (final_id + index) % id != 0 {
+                final_id += prod;
             }
+            prod *= id;
         }
-        break;
     }
-
     final_id
 }
 
