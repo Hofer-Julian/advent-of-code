@@ -11,8 +11,23 @@ fn parse_input_day13_part2(input: &str) -> Vec<Option<i32>> {
 }
 
 #[aoc(day13, part2)]
-fn get_answer_day13_part2(input: &[Option<i32>]) -> i32 {
-    todo!()
+fn get_answer_day13_part2(input: &Vec<Option<i32>>) -> i32 {
+    let first_id = input[0].unwrap();
+    let mut final_id = 0;
+
+    'outer: loop {
+        final_id += first_id;
+        for (index, id) in input.iter().skip(1).enumerate() {
+            if let Some(id) = id {
+                if (final_id + index as i32 + 1) % id != 0 {
+                    continue 'outer;
+                }
+            }
+        }
+        break;
+    }
+
+    final_id
 }
 
 #[cfg(test)]
