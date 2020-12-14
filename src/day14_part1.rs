@@ -3,8 +3,8 @@ use std::collections::HashMap;
 
 use aoc_runner_derive::{aoc, aoc_generator};
 
-#[aoc_generator(day14)]
-fn parse_input_day14(input: &str) -> Vec<(u64, u64, HashMap<u64, u64>)> {
+#[aoc_generator(day14, part1)]
+fn parse_input_day14_part1(input: &str) -> Vec<(u64, u64, HashMap<u64, u64>)> {
     let mut zero_bitmap = u64::MAX;
     let mut one_bitmap = 0;
     let mut instruction = HashMap::new();
@@ -60,6 +60,6 @@ mem[8] = 11
 mem[7] = 101
 mem[8] = 0";
 
-    let instructions = parse_input_day14(input);
+    let instructions = parse_input_day14_part1(input);
     assert_eq!(165, sum_values_in_memory(&instructions));
 }
