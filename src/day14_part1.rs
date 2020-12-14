@@ -34,7 +34,7 @@ fn parse_input_day14_part1(input: &str) -> Vec<(u64, u64, HashMap<u64, u64>)> {
         }
     }
     parsed_data.push((zero_bitmap, one_bitmap, instruction.clone()));
-
+    parsed_data.remove(0);
     parsed_data
 }
 
