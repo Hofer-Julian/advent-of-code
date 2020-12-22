@@ -59,7 +59,16 @@ fn get_single_write_instruction(
     memory_address: &u64,
     value: &u64,
 ) -> HashMap<u64, u64> {
-    todo!()
+    let mut memory_addresses = HashMap::new();
+    for (index, bit) in bitmask.iter().enumerate() {
+        match bit {
+            'X' => todo!(),
+            '1' => todo!(),
+            '0' => (),
+            _ => panic!("Invalid bit"),
+        }
+    }
+    memory_addresses
 }
 
 #[cfg(test)]
