@@ -1,5 +1,5 @@
 use crate::regex;
-use std::{collections::HashMap, todo};
+use std::collections::HashMap;
 
 use aoc_runner_derive::{aoc, aoc_generator};
 
@@ -8,17 +8,21 @@ fn parse_input_day14_part2(input: &str) -> Vec<Program> {
     let mut program = Program::default();
 
     let mut parsed_data = Vec::new();
-    let re = regex!(r"mem\[(\d+)\] = (\d+)");
+    let re_write_instr = regex!(r"mem\[(\d+)\] = (\d+)");
+    let re_bitmap = regex!(r"mask = (\S+)");
 
     for line in input.lines() {
-        if let Some(captures) = re.captures(line) {
+        if let Some(captures) = re_write_instr.captures(line) {
             let position = captures.get(1).unwrap().as_str().parse().unwrap();
             let value = captures.get(2).unwrap().as_str().parse().unwrap();
             program.write_instructions.insert(position, value);
-        } else {
+        } else if let Some(captures) = re_bitmap.captures(line) {
             parsed_data.push(program);
             program = Program::default();
-            program.bitmask = line.chars().rev().collect();
+            let mask = captures.get(1).unwrap().as_str();
+            program.bitmask = mask.chars().rev().collect();
+        } else {
+            panic!("Invalid input {}", line);
         }
     }
     parsed_data.push(program);
@@ -59,16 +63,30 @@ fn get_single_write_instruction(
     memory_address: &u64,
     value: &u64,
 ) -> HashMap<u64, u64> {
-    let mut memory_addresses = HashMap::new();
+    let mut write_instructions = HashMap::new();
+    write_instructions.insert(*memory_address, *value);
     for (index, bit) in bitmask.iter().enumerate() {
         match bit {
-            'X' => todo!(),
-            '1' => todo!(),
+            'X' => {
+                let mut buffer = HashMap::new();
+                for (address, value) in write_instructions {
+                    buffer.insert(address | (1 << index), value);
+                    buffer.insert(address & !(1 << index), value);
+                }
+                write_instructions = buffer;
+            }
+            '1' => {
+                let mut buffer = HashMap::new();
+                for (address, value) in write_instructions {
+                    buffer.insert(address | (1 << index), value);
+                }
+                write_instructions = buffer;
+            }
             '0' => (),
-            _ => panic!("Invalid bit"),
+            bit => panic!("Invalid bit {}", bit),
         }
     }
-    memory_addresses
+    write_instructions
 }
 
 #[cfg(test)]
