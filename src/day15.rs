@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use aoc_runner_derive::{aoc, aoc_generator};
 
 #[aoc_generator(day15)]
@@ -13,18 +15,26 @@ fn parse_input_day15(input: &str) -> Vec<usize> {
 fn number_2020th(input: &Vec<usize>) -> usize {
     let start_len = input.len();
     let mut numbers = input.clone();
+    let mut last_numbers = HashMap::new();
+    for (index, number) in numbers.iter().enumerate() {
+        last_numbers.insert(number.clone(), index);
+    }
+
+    let mut second_last_number = None;
     for index in start_len..2020 {
         let last_number = numbers[index - 1];
-        if let Some(last_index) = numbers[..numbers.len() - 1]
-            .iter()
-            .rposition(|number| *number == last_number)
-        {
+
+        if let Some(last_index) = last_numbers.get(&last_number) {
             numbers.push(index - last_index - 1);
         } else {
             numbers.push(0);
         }
+        if let Some(second_last_number) = second_last_number {
+            last_numbers.insert(second_last_number, index - 1);
+        }
+        second_last_number = Some(numbers[index]);
     }
-    numbers[2020 - 1]
+    *numbers.last().unwrap()
 }
 
 #[cfg(test)]
@@ -80,18 +90,26 @@ fn test_part1_example_7() {
 fn number_30000000th(input: &Vec<usize>) -> usize {
     let start_len = input.len();
     let mut numbers = input.clone();
+    let mut last_numbers = HashMap::new();
+    for (index, number) in numbers.iter().enumerate() {
+        last_numbers.insert(number.clone(), index);
+    }
+
+    let mut second_last_number = None;
     for index in start_len..30000000 {
         let last_number = numbers[index - 1];
-        if let Some(last_index) = numbers[..numbers.len() - 1]
-            .iter()
-            .rposition(|number| *number == last_number)
-        {
+
+        if let Some(last_index) = last_numbers.get(&last_number) {
             numbers.push(index - last_index - 1);
         } else {
             numbers.push(0);
         }
+        if let Some(second_last_number) = second_last_number {
+            last_numbers.insert(second_last_number, index - 1);
+        }
+        second_last_number = Some(numbers[index]);
     }
-    numbers[30000000 - 1]
+    *numbers.last().unwrap()
 }
 
 #[cfg(test)]
