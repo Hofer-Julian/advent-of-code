@@ -1,4 +1,4 @@
-module aoc
+module day16
 
 function run()
     println("Hallo")    
