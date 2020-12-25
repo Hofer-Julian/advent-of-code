@@ -1,0 +1,1 @@
+Run ```julia script.jl --help``` in order to learn about its usage
