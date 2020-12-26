@@ -9,8 +9,12 @@ end
 
 function parse_file(input::AbstractString)
     input = strip(input)
-    rules, mine, nearby = split(input, "\n\n")
-    split(rules, "\n"), split(mine, "\n"), split(nearby, "\n") 
+    rules_complete, mine_complete, nearby_complete = split(input, "\n\n")
+
+    mine = split(mine_complete, ":\n")[2]
+    nearby = split(nearby_complete, ":\n")[2]
+    
+    split(rules_complete, "\n"), split(mine, "\n"), split(nearby, "\n") 
 end
 
 
@@ -29,9 +33,6 @@ function ticket_error_rate(rules, nearby)
 
     error_rate = 0
     for fields in nearby
-        if fields == "nearby tickets:"
-            continue
-        end
         fields_array = split(fields, ",")
         for field in fields_array
             field = parse(Int, field)
