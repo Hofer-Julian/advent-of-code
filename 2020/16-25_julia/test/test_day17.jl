@@ -1,7 +1,7 @@
 using Test
 include("../src/day17.jl")
 
-@testset "Number of active cubes after boot in 3D" begin
+@testset "Day17 part1: Number of active cubes after boot in 3D" begin
     input = """
 .#.
 ..#
@@ -11,7 +11,7 @@ include("../src/day17.jl")
     @test day17.active_cubes_after_boot(inital_state) == 112
 end
 
-@testset "Number of active cubes after boot in 4D" begin
+@testset "Day17 part2: Number of active cubes after boot in 4D" begin
     input = """
 .#.
 ..#

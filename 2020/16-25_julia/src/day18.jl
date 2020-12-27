@@ -1,5 +1,7 @@
 module day18
 
+@enum Part One Two
+
 function read_file()::String
     lines = open("$(@__DIR__)/../input/day18.txt") do f
         input = read(f, String) 
@@ -7,15 +9,15 @@ function read_file()::String
 end
 
 
-function evaluate_input(input::AbstractString)::Int    
+function evaluate_input(input::AbstractString, part::Part)::Int    
     lines = split(input, "\n")
     results = similar(lines, Int)
-    @. results = evaluate_expression(lines)
+    @. results = evaluate_expression(lines, part)
     sum(results)
 end
 
 
-function evaluate_expression(expression::AbstractString)::Int
+function evaluate_expression(expression::AbstractString, part::Part)::Int
     current_evaluation = expression
     re_single_evaluation = r"\(([^\(\)]*)\)"
     while true
@@ -23,16 +25,21 @@ function evaluate_expression(expression::AbstractString)::Int
         if m === nothing
             break
         end
-        evaluated_bracket = evaluate_simple_expression(m.captures[1])
+        evaluated_bracket = evaluate_simple_expression(m.captures[1], part)
         current_evaluation = replace(current_evaluation, re_single_evaluation => evaluated_bracket, count=1)
     end
 
-    evaluate_simple_expression(current_evaluation)
+    evaluate_simple_expression(current_evaluation, part)
 end
 
-function evaluate_simple_expression(expression::AbstractString)::Int
-    re_add = r"^(\d+) \+ (\d+)"
-    re_mul = r"^(\d+) \* (\d+)"
+function evaluate_simple_expression(expression::AbstractString, part::Part)::Int
+    if part == One    
+        re_add = r"^(\d+) \+ (\d+)"
+        re_mul = r"^(\d+) \* (\d+)"
+    elseif part == Two
+        re_add = r"(\d+) \+ (\d+)"
+        re_mul = r"(\d+) \* (\d+)"
+    end
     current_evaluation = expression
     if expression == ""
         return 0
@@ -46,6 +53,7 @@ function evaluate_simple_expression(expression::AbstractString)::Int
         if m_add !== nothing
             result = parse(Int, m_add.captures[1]) + parse(Int, m_add.captures[2])
             current_evaluation = replace(current_evaluation, re_add => result, count=1)
+            continue
         end
 
         if m_mul !== nothing
@@ -59,7 +67,8 @@ end
 
 function run()
     input = read_file()
-    println("The answer to the first part is $(evaluate_input(input))")
+    println("The answer to the first part is $(evaluate_input(input, One))")
+    println("The answer to the second part is $(evaluate_input(input, Two))")
 end
 
 end

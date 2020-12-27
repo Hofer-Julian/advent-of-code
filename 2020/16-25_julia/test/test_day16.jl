@@ -1,7 +1,7 @@
 using Test
 include("../src/day16.jl")
 
-@testset "Error rate" begin
+@testset "Day16 part1: Error rate" begin
     input = """
 class: 1-3 or 5-7
 row: 6-11 or 33-44
@@ -21,7 +21,7 @@ nearby tickets:
 end
 
 
-@testset "Determine fields" begin
+@testset "Day16 part2: Determine fields" begin
     input = """
 class: 0-1 or 4-19
 row: 0-5 or 8-19
