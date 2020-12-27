@@ -3,11 +3,10 @@ module day17
 function read_file()
     lines = open("$(@__DIR__)/../input/day17.txt") do f
         input = read(f, String)
-        parse_file(input)
     end
 end
 
-function parse_file(input::AbstractString)
+function parse_file_part1(input::AbstractString)
     array_dim = 100
 
     lines = split(input, "\n")
@@ -23,6 +22,30 @@ function parse_file(input::AbstractString)
         for (x, state) in enumerate(line)
             if state == '#'
                 inital_state[CartesianIndex(inital_x + x, inital_y + y, inital_z)] = true
+            end
+        end
+    end
+    inital_state
+end
+
+
+function parse_file_part2(input::AbstractString)
+    array_dim = 20
+
+    lines = split(input, "\n")
+    x_length = length(lines[1])
+    y_length = length(lines)
+    inital_x::Int = ceil(array_dim / 2 - x_length / 2)
+    inital_y::Int = ceil(array_dim / 2 - y_length / 2)
+    inital_z::Int = ceil(array_dim / 2)
+    inital_w::Int = ceil(array_dim / 2)
+
+    inital_state = falses(array_dim, array_dim, array_dim, array_dim)
+
+    for (y, line) in enumerate(lines)
+        for (x, state) in enumerate(line)
+            if state == '#'
+                inital_state[CartesianIndex(inital_x + x, inital_y + y, inital_z, inital_w)] = true
             end
         end
     end
@@ -77,8 +100,12 @@ function get_number_of_active_neighbors(old_state, current_index)
 end
 
 function run()
-    inital_state = read_file()
-    println("The answer to the first part is $(active_cubes_after_boot(inital_state))")
+    input = read_file()
+    inital_state_part1 = parse_file_part1(input)
+    println("The answer to the first part is $(active_cubes_after_boot(inital_state_part1))")
+
+    inital_state_part2 = parse_file_part2(input)
+    println("The answer to the second part is $(active_cubes_after_boot(inital_state_part2))")
 end
 
 end
