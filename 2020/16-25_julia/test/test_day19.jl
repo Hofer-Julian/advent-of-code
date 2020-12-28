@@ -16,6 +16,7 @@ abbbab
 aaabbb
 aaaabbb"""
 
-    @test day19.number_match_rule_zero(example_1) == 2
+    input = day19.parse_input(example_1)
+    @test day19.number_match_rule_zero(input) == 2
     
 end
