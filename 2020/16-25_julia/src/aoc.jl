@@ -7,4 +7,7 @@ include("day17.jl")
 
 export day18
 include("day18.jl")
+
+export day19
+include("day19.jl")
 end

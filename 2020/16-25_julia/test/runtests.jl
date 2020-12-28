@@ -4,4 +4,5 @@ using Test
     include("test_day16.jl")
     include("test_day17.jl")
     include("test_day18.jl")
+    include("test_day19.jl")
 end
