@@ -35,7 +35,7 @@ function number_match_rule_zero(rules, messages)
                                 push!(new_names, old_name * new_name)
                             end
                         end
-                        old_names = copy(new_names)
+                        old_names = new_names
                     end
                     append!(new_addition, old_names)
                 end
@@ -45,18 +45,6 @@ function number_match_rule_zero(rules, messages)
         end
         
         if isempty(working_dict)
-            # result = 0
-            # for message in messages
-            #     for rule in finished_dict["0"]
-            #         if rule == message
-            #             result += 1
-            #             @goto loop
-            #         end
-            #     end
-            #     @label loop
-            # end
-            # return result
-            # @show messages
             return filter(m -> m ∈ finished_dict["0"], messages) |> length
         end
     end
@@ -110,7 +98,7 @@ function get_starting_dicts(rules)
                                    [m.captures[3], m.captures[4]]]
             continue
         end
-        
+
         m = match(re_inclusive_two, context)
         if m !== nothing
             working_dict[index] = [[m.captures[1]],
@@ -145,7 +133,8 @@ end
 
 function run()
     rules, messages = read_file() |> parse_input
-    println("The answer to the first part is $(number_match_rule_zero(rules, messages))")
+    @time answer_1 = number_match_rule_zero(rules, messages)
+    println("The answer to the first part is $answer_1")
 end
 
 end
