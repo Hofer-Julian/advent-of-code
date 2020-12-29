@@ -19,14 +19,54 @@ function number_match_rule_zero(rules, messages)
 
     while true
         changed = false
-
+        for (index, numbers) in working_dict
+            if finished_dict_contains_numbers(finished_dict, numbers)
+                new_addition = []
+                for first_dim in numbers
+                    old_names = copy(finished_dict[first_dim[1]])
+                    for (index, number) in enumerate(first_dim)
+                        if index == 1
+                            old_names = finished_dict[number]
+                            continue
+                        end
+                        new_names = []
+                        for old_name in old_names
+                            for new_name in finished_dict[number]
+                                push!(new_names, old_name * new_name)
+                            end
+                        end
+                        old_names = copy(new_names)
+                    end
+                    append!(new_addition, old_names)
+                end
+                finished_dict[index] = new_addition
+                delete!(working_dict, index)
+            end
+        end
+        
+        if isempty(working_dict)
+            # result = 0
+            # for message in messages
+            #     for rule in finished_dict["0"]
+            #         if rule == message
+            #             result += 1
+            #             @goto loop
+            #         end
+            #     end
+            #     @label loop
+            # end
+            # return result
+            # @show messages
+            return filter(m -> m ∈ finished_dict["0"], messages) |> length
+        end
     end
 end
 
 
 function finished_dict_contains_numbers(finished_dict, numbers)
-    for first_dim in numbers
-        for number in first_dim
+
+    for firstdim in numbers
+        for number in firstdim
             if number ∉ keys(finished_dict)
                 return false
             end
@@ -38,14 +78,15 @@ end
 
 function get_starting_dicts(rules)
     re_general = r"(\d+): (.*)"
-    re_inclusive = r"(\d+) (\d+) \| (\d+) (\d+)"
+    re_inclusive_four = r"(\d+) (\d+) \| (\d+) (\d+)"
+    re_inclusive_two = r"(\d+) \| (\d+)"    
     re_one = r"(\d+)"
     re_two = r"(\d+) (\d+)"
     re_three = r"(\d+) (\d+) (\d+)"
     re_letter = r"\"(\w)\""
 
-    finished_dict = Dict{Int,Any}()
-    working_dict = Dict{Int,Any}()
+    finished_dict = Dict()
+    working_dict = Dict()
 
     
     for rule in rules
@@ -53,7 +94,7 @@ function get_starting_dicts(rules)
         if m === nothing
             throw(ErrorException("This rule does not match the basic pattern: $rule"))
         end
-        index = parse(Int, m.captures[1])
+        index = m.captures[1]
         context = m.captures[2]
         
 
@@ -63,10 +104,17 @@ function get_starting_dicts(rules)
             continue
         end
 
-        m = match(re_inclusive, context)
+        m = match(re_inclusive_four, context)
         if m !== nothing
             working_dict[index] = [[m.captures[1], m.captures[2]],
                                    [m.captures[3], m.captures[4]]]
+            continue
+        end
+        
+        m = match(re_inclusive_two, context)
+        if m !== nothing
+            working_dict[index] = [[m.captures[1]],
+                                   [m.captures[2]]]
             continue
         end
 
@@ -97,7 +145,7 @@ end
 
 function run()
     rules, messages = read_file() |> parse_input
-    println("The answer to the first part is")
+    println("The answer to the first part is $(number_match_rule_zero(rules, messages))")
 end
 
 end
