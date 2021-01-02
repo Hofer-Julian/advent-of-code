@@ -37,16 +37,23 @@ function number_match_rule_zero(rules, messages)
                         end
                         new_names = []
                         for old_name in old_names
+                            if number == "11"
+                                messages_starts_with_11 = starts_with_message(old_name, messages)
+                                @show
+                            end
                             for new_name in finished_dict[number]
                                 push!(new_names, old_name * new_name)
                             end
                         end
+
+
                         old_names = new_names
                     end
                     append!(new_addition, old_names)
                 end
                 finished_dict[index] = new_addition
                 delete!(working_dict, index)
+                
             end
         end
         
@@ -54,6 +61,10 @@ function number_match_rule_zero(rules, messages)
             return filter(m -> m ∈ finished_dict["0"], messages) |> length
         end
     end
+end
+
+function starts_with_message(old_name, messages)
+    filter(m -> startswith(m, old_name), messages)
 end
 
 

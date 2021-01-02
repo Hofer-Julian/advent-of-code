@@ -21,6 +21,7 @@ aaaabbb"""
     
 end
 
+
 @testset "Day19 part2: Number of messages matching rule 0 (modified rules)" begin
     example_1 = """
 42: 9 14 | 10 1
