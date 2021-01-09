@@ -72,7 +72,7 @@ aaaabbaabbaaaaaaabbbabbbaaabbaabaaa
 babaaabbbaaabaababbaabababaaab
 aabbbbbaabbbaaaaaabbbbbababaaaaabbaaabba"""
 
-    rules, messages = day19.parse_input(example_1) |> day19.adapt_for_part_2
-    @test day19.number_match_rule_zero(rules, messages) == 12
+    rules, messages = day19.parse_input(example_1)
+    @test day19.number_match_rule_zero_part2(rules, messages) == 12
     
 end
